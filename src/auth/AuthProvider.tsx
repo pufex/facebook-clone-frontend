@@ -17,7 +17,8 @@ type ResponseAuthObject = {
 type AuthContextType = {
     auth: AuthState,
     register: (data: RegisterObject) => Promise<void>,
-    login: (data: LoginObject) => Promise<void>
+    login: (data: LoginObject) => Promise<void>,
+    logout: () => Promise<void>
 } | null
 
 type AuthProviderProps = {
@@ -81,6 +82,17 @@ export default function AuthProvider({ children }: AuthProviderProps) {
             })
         } catch (err) {
             throw err
+        }
+    }, [])
+
+    const logout = useCallback(async () => {
+        try{
+            await axiosPublic.get("/auth/logout")
+            profile_pic_id.current = null
+            background_pic_id.current = null
+            setAuth(null)
+        }catch(err){
+            console.log(err)
         }
     }, [])
 
@@ -231,7 +243,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
         fetchBackgroundPicture();
     }, [auth])
 
-    return <AuthContext.Provider value={{ auth, register, login }}>
+    return <AuthContext.Provider value={{ auth, register, login, logout }}>
         {children}
     </AuthContext.Provider>
 }
