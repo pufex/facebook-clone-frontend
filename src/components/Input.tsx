@@ -6,9 +6,10 @@ type InputProps = {
     label?: string,
     type?: string,
     className?: string,
+    placeholder?: string,
 }
 
-export default function Input({name, id, label, type = "text", className}: InputProps){
+export default function Input({name, id, label, type = "text", className, placeholder}: InputProps){
     
     const {register, formState: {errors}} = useFormContext()
     
@@ -36,6 +37,7 @@ export default function Input({name, id, label, type = "text", className}: Input
             {...register(name)}
             id={id}
             type={type}
+            placeholder={placeholder}
             className="w-full h-10 outline-none border-2 border-black/20 rounded-lg px-2 text-xl text-black focus:bg-sky-500 focus:border-4"
         />
     </div>
