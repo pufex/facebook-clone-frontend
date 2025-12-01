@@ -51,7 +51,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     const login = useCallback(async (data: LoginObject) => {
         try {
             const response = await axiosPublic.post(
-                "/auth/register",
+                "/auth/login",
                 data,
                 {
                     withCredentials: true,

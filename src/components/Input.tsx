@@ -38,7 +38,7 @@ export default function Input({name, id, label, type = "text", className, placeh
             id={id}
             type={type}
             placeholder={placeholder}
-            className="w-full h-10 outline-none border-2 border-black/20 rounded-lg px-2 text-xl text-black focus:bg-sky-500 focus:border-4"
+            className="w-full h-10 outline-none border-2 border-black/20 rounded-lg px-2 text-xl text-black focus:border-sky-500 focus:border-4"
         />
     </div>
 }

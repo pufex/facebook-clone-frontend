@@ -57,7 +57,7 @@ export default function RegisterFunction (){
                     {typeof errors.root.message === "string" && errors.root.message}
                 </p>
             }
-            <div className="w-full flex items-center justify-between gap-2 mb-2">
+            <div className="w-full flex items-center justify-between gap-2 mb-4">
                 <Input
                     name="name"
                     id="name"
@@ -79,7 +79,7 @@ export default function RegisterFunction (){
                 type="email"
                 label="Email Address"
                 placeholder="Email Address..."
-                className="w-full mb-2"
+                className="w-full mb-4"
             />
             <Input 
                 name="password"
@@ -87,11 +87,12 @@ export default function RegisterFunction (){
                 type="password"
                 label="Password"
                 placeholder="********"
-                className="w-full mb-4"
+                className="w-full mb-10"
             />
             <Button
                 type="submit"
                 disabled={loading}
+                className="w-full"
             >
                 {
                     loading
