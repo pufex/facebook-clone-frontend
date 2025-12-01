@@ -1,6 +1,7 @@
 import { createContext, useState, type JSX, useCallback, useRef, useEffect } from "react";
 import type { ImageChunk, ImageDeclaration, LoginObject, RegisterObject, ResponseUser, User } from "../types";
 import { axiosPublic } from "../api/api";
+import { LoaderCircle } from "lucide-react";
 
 type AuthObject = {
     user: User,
@@ -18,7 +19,8 @@ type AuthContextType = {
     auth: AuthState,
     register: (data: RegisterObject) => Promise<void>,
     login: (data: LoginObject) => Promise<void>,
-    logout: () => Promise<void>
+    logout: () => Promise<void>,
+    refresh: () => Promise<ResponseAuthObject | undefined>
 } | null
 
 type AuthProviderProps = {
@@ -29,6 +31,7 @@ export const AuthContext = createContext<AuthContextType>(null)
 
 export default function AuthProvider({ children }: AuthProviderProps) {
 
+    const [loading, setLoading] = useState(true);
     const [auth, setAuth] = useState<AuthState>(null)
     const profile_pic_id = useRef<string>(null)
     const background_pic_id = useRef<string>(null)
@@ -94,6 +97,53 @@ export default function AuthProvider({ children }: AuthProviderProps) {
         }catch(err){
             console.log(err)
         }
+    }, [])
+
+    const refresh = useCallback(async () => {
+        try{
+            const response = await axiosPublic.get(
+                "/auth/refresh",
+                { withCredentials: true }
+            )
+            const responseAuthObject = response.data as ResponseAuthObject
+            return responseAuthObject
+        }catch(err){
+            console.log(err)
+            return undefined
+        }
+    }, [])
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const responseAuthObject = await refresh()
+            if(responseAuthObject){
+                setAuth({
+                    ...responseAuthObject,
+                    user: {
+                        ...responseAuthObject.user,
+                        profile_picture: responseAuthObject.user.profile_picture_id
+                            ? {
+                                id: responseAuthObject.user.profile_picture_id,
+                                loading: true,
+                                error: "",
+                                data: "",
+                            }
+                            : null,
+                        background_picture: responseAuthObject.user.background_picture_id
+                            ? {
+                                id: responseAuthObject.user.background_picture_id,
+                                loading: true,
+                                error: "",
+                                data: "",
+                            }
+                            : null,
+                    }
+                })
+            }
+            setLoading(false)
+        }
+
+        fetchUser()
     }, [])
 
     useEffect(() => {
@@ -243,7 +293,13 @@ export default function AuthProvider({ children }: AuthProviderProps) {
         fetchBackgroundPicture();
     }, [auth])
 
-    return <AuthContext.Provider value={{ auth, register, login, logout }}>
-        {children}
+    return <AuthContext.Provider value={{ auth, register, login, logout, refresh }}>
+        {
+            loading
+                ? <div className="w-full h-screen flex items-center justify-center">
+                    <LoaderCircle className="w-20 h-20 text-sky-500 animate-spin"/>
+                </div>
+                : children
+        }
     </AuthContext.Provider>
 }
