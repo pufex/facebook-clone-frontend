@@ -8,7 +8,7 @@ type ButtonProps = {
 
 export default function Button({className, type = "button", onClick, disabled, children}: ButtonProps){
     return <button
-        className={`${className} h-10 px-8 text-white rounded-lg border-2 flex items-center justify-center gap-2 ${disabled ? "bg-sky-300 cursor-not-allowed border-sky-600" : "bg-sky-600 border-sky-800 cursor-pointer"}`}
+        className={`${className} h-10 px-8 text-white rounded-lg border-2 flex items-center justify-center gap-2 ${disabled ? "bg-sky-300 cursor-not-allowed border-sky-600" : "bg-sky-600 border-sky-800 cursor-pointer hover:bg-sky-500 active:bg-sky-400"}`}
         onClick={onClick}
         disabled={disabled}
         type={type}

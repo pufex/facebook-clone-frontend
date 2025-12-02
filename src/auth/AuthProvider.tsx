@@ -51,7 +51,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     const login = useCallback(async (data: LoginObject) => {
         try {
             const response = await axiosPublic.post(
-                "/auth/register",
+                "/auth/login",
                 data,
                 {
                     withCredentials: true,
@@ -117,6 +117,8 @@ export default function AuthProvider({ children }: AuthProviderProps) {
         const fetchUser = async () => {
             const responseAuthObject = await refresh()
             if(responseAuthObject){
+                profile_pic_id.current = responseAuthObject.user.profile_picture_id
+                background_pic_id.current = responseAuthObject.user.background_picture_id
                 setAuth({
                     ...responseAuthObject,
                     user: {

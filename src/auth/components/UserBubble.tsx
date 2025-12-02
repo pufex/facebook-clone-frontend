@@ -6,7 +6,7 @@ export default function UserBubble(){
     const navigate = useNavigate()
     const {auth} = useAuth()
     return auth && <div 
-        className="w-10 h-10 border-4 border-sky-800 rounded-full flex items-center justify-center"
+        className="w-10 h-10 border-4 border-sky-800 rounded-full flex items-center justify-center overflow-hidden"
         onClick={() => navigate(`/profile/${auth.user._id}`)}
     >
         {
@@ -14,7 +14,7 @@ export default function UserBubble(){
                 ? <img
                     className="w-full h-full object-center object-cover"
                     alt={auth.user.name}
-                    src="/default-avatar"
+                    src="/default-avatar.png"
                 />
                 : auth.user.profile_picture.loading
                     ? <LoaderCircle className="w-5 h-5 text-sky-600 animate-spin"/>

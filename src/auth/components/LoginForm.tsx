@@ -24,6 +24,7 @@ export default function RegisterFunction (){
     const {formState: {errors}, handleSubmit, setError} = methods
 
     const onSubmit = async (data: LoginFields) => {
+        console.log(data)
         try{
             setLoading(true)
             await login(data)
@@ -69,7 +70,7 @@ export default function RegisterFunction (){
                 type="email"
                 label="Email Address"
                 placeholder="Email Address..."
-                className="w-full mb-2"
+                className="w-full mb-4"
             />
             <Input 
                 name="password"
@@ -77,11 +78,12 @@ export default function RegisterFunction (){
                 type="password"
                 label="Password"
                 placeholder="********"
-                className="w-full mb-4"
+                className="w-full mb-8"
             />
             <Button
                 type="submit"
                 disabled={loading}
+                className="w-full"
             >
                 {
                     loading
